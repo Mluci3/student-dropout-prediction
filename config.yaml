@@ -1,0 +1,38 @@
+# Configuration for the student dropout prediction pipeline.
+# All paths are relative to the project root.
+
+seed: 42
+
+paths:
+  raw_data: data/raw/StudentsPrepared.xlsx
+  model: models/pipeline.joblib
+  metrics: models/metrics.json
+  background: models/shap_background.joblib   # sample used as SHAP reference
+  figures: reports/figures
+
+data:
+  target_column: Target
+  positive_label: Desistente   # mapped to 1 (dropout); everything else -> 0
+  test_size: 0.2
+
+model:
+  # Feature sets are defined in src/config.py (VARIANT_SEMESTERS).
+  primary_variant: early_warning   # predicts at the end of the 1st semester (served by the app)
+  reference_variant: full          # also uses the 2nd semester; reported as a performance ceiling
+
+train:
+  cv_folds: 5
+  scoring: roc_auc             # primary CV metric
+  n_iter_search: 30            # RandomizedSearchCV iterations (per candidate model)
+  # Probabilities are calibrated (CalibratedClassifierCV) so the app can show them
+  # as real probabilities. "sigmoid" (Platt) is robust for a few thousand rows.
+  calibration_method: sigmoid
+  # Decision threshold: the highest threshold whose out-of-fold recall on the
+  # dropout class is >= target_recall (ADR 0004). Saved in metrics.json.
+  target_recall: 0.80
+  default_threshold: 0.5       # fallback only, if metrics.json is missing
+  bootstrap_samples: 1000      # for the test-set confidence intervals
+
+explain:
+  background_size: 200         # sample size for SHAP background / summary
+  top_n: 6                     # number of local factors shown per prediction

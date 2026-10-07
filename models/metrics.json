@@ -1,0 +1,377 @@
+{
+  "variant": "early_warning",
+  "prediction_moment": "Fim do 1º semestre (dados de ingresso + 1º semestre)",
+  "selected_model": "logistic_regression",
+  "best_params": {
+    "model__C": 0.31489116479568624
+  },
+  "model_comparison": {
+    "logistic_regression": {
+      "cv_auc": 0.892872886569487,
+      "cv_std": 0.01226665743921874,
+      "train_auc": 0.9005076132292948,
+      "best_params": {
+        "model__C": 0.31489116479568624
+      }
+    },
+    "random_forest": {
+      "cv_auc": 0.8941128502039556,
+      "cv_std": 0.007997236916212203,
+      "train_auc": 0.9782676968130828,
+      "best_params": {
+        "model__max_depth": 13,
+        "model__max_features": "sqrt",
+        "model__min_samples_leaf": 2,
+        "model__n_estimators": 539
+      }
+    },
+    "hist_gradient_boosting": {
+      "cv_auc": 0.8904616088448398,
+      "cv_std": 0.009113989103786212,
+      "train_auc": 0.9351157202687148,
+      "best_params": {
+        "model__l2_regularization": 0.003008686821445846,
+        "model__learning_rate": 0.1131225105716033,
+        "model__max_depth": 3,
+        "model__max_leaf_nodes": 19,
+        "model__min_samples_leaf": 35
+      }
+    }
+  },
+  "model_selection": {
+    "rule": "one_standard_error",
+    "highest_cv_model": "random_forest",
+    "tolerance": 0.003576473075364255,
+    "eligible": [
+      "logistic_regression",
+      "random_forest"
+    ],
+    "selected": "logistic_regression"
+  },
+  "threshold": 0.28839906445622854,
+  "threshold_strategy": {
+    "criterion": "target_recall",
+    "target_recall": 0.8
+  },
+  "calibration": {
+    "method": "sigmoid",
+    "real_dropout_rate_test": 0.32090395480225986,
+    "mean_proba_before": 0.4072871814705271,
+    "mean_proba_after": 0.31489595407046017,
+    "brier_before": 0.1115990863568298,
+    "brier_after": 0.1031924461036582
+  },
+  "test_metrics": {
+    "threshold": 0.28839906445622854,
+    "roc_auc": 0.9122237585245249,
+    "pr_auc": 0.865669388718943,
+    "precision": 0.7300613496932515,
+    "recall": 0.8380281690140845,
+    "f1": 0.780327868852459,
+    "accuracy": 0.848587570621469,
+    "brier": 0.1031924461036582,
+    "mean_predicted_proba": 0.31489595407046017,
+    "alert_rate": 0.36836158192090396,
+    "confusion_matrix": {
+      "tn": 513,
+      "fp": 88,
+      "fn": 46,
+      "tp": 238
+    }
+  },
+  "test_ci95": {
+    "roc_auc": [
+      0.8865989796322922,
+      0.933800205173068
+    ],
+    "f1": [
+      0.7421855886534201,
+      0.8156628688135028
+    ],
+    "recall": [
+      0.7929042715484363,
+      0.8784402852049911
+    ],
+    "precision": [
+      0.6790676691093812,
+      0.7777948717948718
+    ]
+  },
+  "baselines": {
+    "rule": {
+      "description": "mensalidades atrasadas OU 0 disciplinas aprovadas no 1º semestre",
+      "threshold": 0.5,
+      "roc_auc": 0.7683204049588714,
+      "pr_auc": 0.6255027084676877,
+      "precision": 0.835820895522388,
+      "recall": 0.5915492957746479,
+      "f1": 0.6927835051546392,
+      "accuracy": 0.831638418079096,
+      "brier": 0.16836158192090395,
+      "mean_predicted_proba": 0.2271186440677966,
+      "alert_rate": 0.2271186440677966,
+      "confusion_matrix": {
+        "tn": 568,
+        "fp": 33,
+        "fn": 116,
+        "tp": 168
+      }
+    },
+    "dummy_stratified": {
+      "threshold": 0.5,
+      "roc_auc": 0.5011160975838392,
+      "pr_auc": 0.3213927695378856,
+      "precision": 0.322463768115942,
+      "recall": 0.31338028169014087,
+      "f1": 0.31785714285714284,
+      "accuracy": 0.5683615819209039,
+      "brier": 0.43163841807909603,
+      "mean_predicted_proba": 0.31186440677966104,
+      "alert_rate": 0.31186440677966104,
+      "confusion_matrix": {
+        "tn": 414,
+        "fp": 187,
+        "fn": 195,
+        "tp": 89
+      }
+    }
+  },
+  "fairness": {
+    "group_column": "Genero",
+    "by_group": {
+      "Feminino": {
+        "n": 563,
+        "dropout_rate": 0.2433392539964476,
+        "recall": 0.8248175182481752,
+        "precision": 0.6807228915662651,
+        "alert_rate": 0.29484902309058614
+      },
+      "Masculino": {
+        "n": 322,
+        "dropout_rate": 0.45652173913043476,
+        "recall": 0.8503401360544217,
+        "precision": 0.78125,
+        "alert_rate": 0.4968944099378882
+      }
+    }
+  },
+  "overfitting": {
+    "train_auc": 0.9005076132292948,
+    "cv_auc": 0.892872886569487,
+    "test_auc": 0.9122237585245249,
+    "gap_train_cv": 0.0076347266598078,
+    "verdict": "Sem overfitting/underfitting relevante: treino, CV e teste próximos (treino 0.901, CV 0.893, teste 0.912).",
+    "learning_curve": {
+      "train_sizes": [
+        283,
+        919,
+        1556,
+        2193,
+        2830
+      ],
+      "train_auc": [
+        0.9374917505846672,
+        0.9101137432802406,
+        0.9108432606951936,
+        0.9007933992039983,
+        0.9005010486138303
+      ],
+      "cv_auc": [
+        0.8729149938832874,
+        0.8843017820686352,
+        0.8900658911187401,
+        0.8914352158365897,
+        0.8928673799615575
+      ]
+    }
+  },
+  "feature_columns": [
+    "Curso",
+    "QualificacaoAnterior",
+    "NecessidadesEspeciais",
+    "Devedor",
+    "MensalidadesEmDia",
+    "Bolsista",
+    "International",
+    "UnidadesCurriculares1SemestreGrau",
+    "QualificacaoAnteriorGrau",
+    "NotaAdmissao",
+    "UnidadesCurriculares1SemestreCreditado",
+    "UnidadesCurriculares1SemestreInscrito",
+    "UnidadesCurriculares1SemestreAvaliacoes",
+    "UnidadesCurriculares1SemestreAprovado",
+    "UnidadesCurriculares1SemestreSemAvaliacoes",
+    "TaxaDesemprego",
+    "TaxaInflacao",
+    "PIB"
+  ],
+  "n_train": 3538,
+  "n_test": 885,
+  "dropout_rate": 0.32104906172281256,
+  "reference": {
+    "variant": "full",
+    "prediction_moment": "Fim do 2º semestre (dados de ingresso + 1º e 2º semestres)",
+    "selected_model": "logistic_regression",
+    "best_params": {
+      "model__C": 0.1648044642797898
+    },
+    "model_comparison": {
+      "logistic_regression": {
+        "cv_auc": 0.9127064597202118,
+        "cv_std": 0.0118435517836586,
+        "train_auc": 0.9199765490747606,
+        "best_params": {
+          "model__C": 0.1648044642797898
+        }
+      },
+      "random_forest": {
+        "cv_auc": 0.9124609868601145,
+        "cv_std": 0.008509019377634925,
+        "train_auc": 0.987788477918364,
+        "best_params": {
+          "model__max_depth": 13,
+          "model__max_features": "sqrt",
+          "model__min_samples_leaf": 2,
+          "model__n_estimators": 539
+        }
+      },
+      "hist_gradient_boosting": {
+        "cv_auc": 0.9128094043364736,
+        "cv_std": 0.010368150335360536,
+        "train_auc": 0.9533193236843107,
+        "best_params": {
+          "model__l2_regularization": 0.003008686821445846,
+          "model__learning_rate": 0.1131225105716033,
+          "model__max_depth": 3,
+          "model__max_leaf_nodes": 19,
+          "model__min_samples_leaf": 35
+        }
+      }
+    },
+    "model_selection": {
+      "rule": "one_standard_error",
+      "highest_cv_model": "hist_gradient_boosting",
+      "tolerance": 0.00463677779016068,
+      "eligible": [
+        "logistic_regression",
+        "hist_gradient_boosting",
+        "random_forest"
+      ],
+      "selected": "logistic_regression"
+    },
+    "threshold": 0.3331993512228311,
+    "threshold_strategy": {
+      "criterion": "target_recall",
+      "target_recall": 0.8
+    },
+    "calibration": {
+      "method": "sigmoid",
+      "real_dropout_rate_test": 0.32090395480225986,
+      "mean_proba_before": 0.39808733581017275,
+      "mean_proba_after": 0.3168285276020314,
+      "brier_before": 0.09388261921925752,
+      "brier_after": 0.0868734968798907
+    },
+    "test_metrics": {
+      "threshold": 0.3331993512228311,
+      "roc_auc": 0.9349616835790113,
+      "pr_auc": 0.8988929755574271,
+      "precision": 0.797979797979798,
+      "recall": 0.8345070422535211,
+      "f1": 0.8158347676419966,
+      "accuracy": 0.8790960451977401,
+      "brier": 0.0868734968798907,
+      "mean_predicted_proba": 0.3168285276020314,
+      "alert_rate": 0.33559322033898303,
+      "confusion_matrix": {
+        "tn": 541,
+        "fp": 60,
+        "fn": 47,
+        "tp": 237
+      }
+    },
+    "test_ci95": {
+      "roc_auc": [
+        0.9143072404047122,
+        0.9534392783330371
+      ],
+      "f1": [
+        0.7793444713885302,
+        0.850431249422846
+      ],
+      "recall": [
+        0.7894736842105263,
+        0.8785851648351648
+      ],
+      "precision": [
+        0.7508674377224199,
+        0.8409144010195412
+      ]
+    },
+    "baselines": {
+      "rule": {
+        "description": "mensalidades atrasadas OU 0 disciplinas aprovadas no 2º semestre",
+        "threshold": 0.5,
+        "roc_auc": 0.8078847460804762,
+        "pr_auc": 0.6787943111409332,
+        "precision": 0.8558558558558559,
+        "recall": 0.6690140845070423,
+        "f1": 0.7509881422924901,
+        "accuracy": 0.8576271186440678,
+        "brier": 0.1423728813559322,
+        "mean_predicted_proba": 0.25084745762711863,
+        "alert_rate": 0.25084745762711863,
+        "confusion_matrix": {
+          "tn": 569,
+          "fp": 32,
+          "fn": 94,
+          "tp": 190
+        }
+      },
+      "dummy_stratified": {
+        "threshold": 0.5,
+        "roc_auc": 0.5011160975838392,
+        "pr_auc": 0.3213927695378856,
+        "precision": 0.322463768115942,
+        "recall": 0.31338028169014087,
+        "f1": 0.31785714285714284,
+        "accuracy": 0.5683615819209039,
+        "brier": 0.43163841807909603,
+        "mean_predicted_proba": 0.31186440677966104,
+        "alert_rate": 0.31186440677966104,
+        "confusion_matrix": {
+          "tn": 414,
+          "fp": 187,
+          "fn": 195,
+          "tp": 89
+        }
+      }
+    },
+    "fairness": {
+      "group_column": "Genero",
+      "by_group": {
+        "Feminino": {
+          "n": 563,
+          "dropout_rate": 0.2433392539964476,
+          "recall": 0.8175182481751825,
+          "precision": 0.7832167832167832,
+          "alert_rate": 0.2539964476021314
+        },
+        "Masculino": {
+          "n": 322,
+          "dropout_rate": 0.45652173913043476,
+          "recall": 0.8503401360544217,
+          "precision": 0.8116883116883117,
+          "alert_rate": 0.4782608695652174
+        }
+      }
+    },
+    "overfitting": {
+      "train_auc": 0.9199765490747606,
+      "cv_auc": 0.9127064597202118,
+      "test_auc": 0.9349616835790113,
+      "gap_train_cv": 0.007270089354548759,
+      "verdict": "Sem overfitting/underfitting relevante: treino, CV e teste próximos (treino 0.920, CV 0.913, teste 0.935)."
+    }
+  }
+}

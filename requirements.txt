@@ -1,0 +1,13 @@
+# Runtime dependencies (training + app). Pinned to the versions the model artifact
+# was trained with: models/pipeline.joblib must be loaded with the same scikit-learn.
+# Python 3.11
+pandas==3.0.6
+numpy==2.4.6
+scipy==1.17.1
+scikit-learn==1.9.1
+openpyxl==3.1.5
+shap==0.51.0
+matplotlib==3.11.2
+streamlit==1.65.0
+joblib==1.6.0
+PyYAML==6.0.3

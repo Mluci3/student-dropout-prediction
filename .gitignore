@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Data (keep raw source tracked; ignore intermediate artifacts)
+data/processed/*
+!data/processed/.gitkeep
+
+# Notebook output noise (optional) -- keep notebooks tracked
+
+# Internal review notes / audit checklists (not part of the public repo)
+docs/review/
+
+# Exam statement (institutional material) and the delivery file (links go to the
+# course platform, not to the public repo). No PDF belongs in this repo.
+*.pdf
+entrega.txt

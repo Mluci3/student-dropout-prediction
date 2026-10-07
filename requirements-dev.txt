@@ -1,0 +1,7 @@
+# Development tools (tests and notebook execution). Install with:
+#   pip install -r requirements-dev.txt
+-r requirements.txt
+pytest==9.1.1
+nbconvert==7.17.1
+ipykernel==7.4.0
+
