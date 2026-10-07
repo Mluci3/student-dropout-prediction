@@ -1,5 +1,10 @@
 # 🎓 Previsão de Evasão Estudantil · Student Dropout Prediction
 
+[![CI](https://github.com/Mluci3/student-dropout-prediction/actions/workflows/ci.yml/badge.svg)](https://github.com/Mluci3/student-dropout-prediction/actions/workflows/ci.yml)
+[![App](https://img.shields.io/badge/app-Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://evasao-estudantil.streamlit.app/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![Python 3.11](https://img.shields.io/badge/python-3.11-3776AB?logo=python&logoColor=white)
+
 > **EN — TL;DR:** End-to-end binary ML pipeline that flags university students at
 > risk of dropping out **at the end of their 1st semester** — early enough for the
 > institution to intervene (4,424 students, UCI *Predict Students' Dropout and
@@ -9,9 +14,15 @@
 > scikit-learn pipeline, tuned + cross-validated model selection (one-standard-error
 > rule), calibrated probabilities, a recall-targeted alert threshold, baselines,
 > over/underfitting analysis, a fairness audit (sensitive attributes excluded),
-> SHAP explainability (global + per-student), leakage-guard tests and a Streamlit
-> app on Streamlit Community Cloud. Code and identifiers are in English; the UI/docs are in Portuguese. See
-> [Quickstart](#-como-rodar) and [docs/analysis.md](docs/analysis.md).
+> SHAP explainability (global + per-student), an offline drift/data-quality monitor,
+> 40 automated tests (including the app itself) running in GitHub Actions CI, and a
+> Streamlit app on Streamlit Community Cloud. Code and identifiers are in English;
+> the UI/docs are in Portuguese. See [Quickstart](#-como-rodar) and
+> [docs/analysis.md](docs/analysis.md).
+
+**▶ App:** <https://evasao-estudantil.streamlit.app/>
+
+![App: previsão de risco de um aluno, com probabilidade calibrada, alerta e fatores SHAP](docs/images/app-prediction.png)
 
 Projeto da **Prova Substitutiva — Fase 3 (Machine Learning Engineering)**,
 estruturado também como peça de **portfólio**.
@@ -122,12 +133,46 @@ pip install -r requirements-dev.txt   # runtime (requirements.txt) + pytest/nbco
 # 2. Treinar (gera models/pipeline.joblib, metrics.json e figuras)
 python -m src.train
 
-# 3. Testes
+# 3. Testes (40: dados, features, modelo salvo, monitoramento e o próprio app)
 pytest
 
-# 4. App local
+# 4. Monitoramento: qualidade e drift de um lote novo de alunos
+python -m src.monitor caminho/do/lote.xlsx
+
+# 5. App local
 streamlit run app/streamlit_app.py
 ```
+
+## ✅ Testes e CI
+
+Os testes rodam no **GitHub Actions** a cada push na `main` e em todo pull request
+([`.github/workflows/ci.yml`](.github/workflows/ci.yml)). Eles cobrem:
+
+- **dados e features**: reparo das notas, binarização do alvo, split estratificado;
+- **guardas contra vazamento**: nenhuma informação do 2º semestre e nenhum atributo
+  sensível chegam ao modelo principal;
+- **modelo salvo**: o artefato carrega, prevê e explica um aluno real;
+- **monitoramento**: PSI, qualidade dos dados e resumo das previsões;
+- **o app**: abre as 3 páginas, clica em "Prever" e confere probabilidade, risco e
+  fatores (`streamlit.testing`, sem navegador).
+
+### Fluxo de trabalho (CI/CD)
+
+O Streamlit Community Cloud publica automaticamente cada push na `main` (o "CD").
+Para que nada chegue ao app sem passar pelos testes:
+
+1. criar uma branch para a mudança (`git switch -c minha-mudanca`);
+2. abrir um pull request para a `main`;
+3. esperar o CI ficar verde;
+4. fazer o merge — e o app é atualizado sozinho.
+
+## 📈 Monitoramento
+
+O plano completo — o que monitorar, limiares e gatilhos de retreino — está em
+[`docs/monitoring.md`](docs/monitoring.md). Como o desfecho real (evasão) só é
+conhecido meses depois, o monitoramento usa sinais antecipados, automatizados em
+[`src/monitor.py`](src/monitor.py): qualidade dos dados (incluindo notas
+corrompidas), drift das entradas por PSI e comportamento das previsões.
 
 ## 🌐 Deploy (Streamlit Community Cloud)
 
@@ -140,12 +185,13 @@ funcione sem re-treinar, e cada push na `main` atualiza o app
 ## 🗂️ Estrutura
 
 ```
-src/        # config (variantes), data, features, train, evaluate, explain, predict
+src/        # config (variantes), data, features, train, evaluate, explain, predict, monitor
 app/        # streamlit_app.py
-tests/      # pytest (reparo de notas, binarização, guardas contra vazamento, inferência)
-models/     # pipeline.joblib + metrics.json (principal + referência)
-reports/    # figuras do modelo principal (ROC, PR, matriz de confusão, SHAP, curva de aprendizado)
-docs/       # analysis.md + ADRs (decisões de arquitetura)
+tests/      # pytest: dados, features, vazamento, modelo salvo, monitoramento e app
+models/     # pipeline.joblib (calibrado) + metrics.json (principal + referência)
+reports/    # figuras do modelo principal (ROC, PR, calibração, overfitting, SHAP…)
+docs/       # analysis.md, monitoring.md, ADRs e imagens
+.github/    # workflow de CI (GitHub Actions)
 ```
 
 ## 📚 Dados e citação
@@ -166,6 +212,11 @@ do dataset público **Predict Students' Dropout and Academic Success**, licencia
 - **Repositório GitHub**: <https://github.com/Mluci3/student-dropout-prediction>
 - **App (Streamlit Community Cloud)**: <https://evasao-estudantil.streamlit.app/>
 - **Vídeo (≥5 min)**: _link_
+
+## 📄 Licença
+
+Código sob a licença [MIT](LICENSE). Os dados mantêm a licença CC BY 4.0 dos
+autores originais (ver [Dados e citação](#-dados-e-citação)).
 
 ## ⚠️ Limitações
 
