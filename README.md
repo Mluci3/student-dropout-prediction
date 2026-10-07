@@ -163,8 +163,8 @@ do dataset público **Predict Students' Dropout and Academic Success**, licencia
 
 ## 🔗 Entregáveis
 
-- **Repositório GitHub**: _link_
-- **App (Streamlit Community Cloud)**: _link_
+- **Repositório GitHub**: <https://github.com/Mluci3/student-dropout-prediction>
+- **App (Streamlit Community Cloud)**: <https://evasao-estudantil.streamlit.app/>
 - **Vídeo (≥5 min)**: _link_
 
 ## ⚠️ Limitações
